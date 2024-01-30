@@ -9,7 +9,7 @@ const isLogin = (req ,res , next) => {
             let login = jwt.verify(token, secret);
             if (login) {
                req.user = login;
-               console.log(login , req.user);
+         
                next();
             }
         } catch (error) {

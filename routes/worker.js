@@ -6,7 +6,8 @@ router.post('/addnewworker', isLogin, async (req, res) => {
     try {
         const { name, mobile, designation, rate } = req.body;
         const newWorker = await workermodel.create({ name, mobile, designation, rate })
-        return res.status(200).send({ success: true, workerid: newWorker.id })
+        console.log(newWorker);
+        return res.status(200).send({ success: true, worker: newWorker })
     }
     catch (e) {
         console.log(e.message);
@@ -51,6 +52,7 @@ router.put('/editworker', isLogin, async (req, res) => {
     try {
         const { id, name, designation, mobile, rate } = req.body;
         const editedWorker = await workermodel.findByIdAndUpdate(id, { name, designation, mobile, rate });
+        console.log(editedWorker);
         return res.status(200).send({ success: true, editedWorker })
     } catch (e) {
         console.log(e.message);
