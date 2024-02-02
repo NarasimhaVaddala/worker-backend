@@ -19,11 +19,7 @@ const schema = {
         type:Number,
         required:true,
     },
-    attendance:{
-            type:Array,
-            default:[]
-    }
-    
+    attendance:{type:Array , default:[]}
 
 }
 const workerSchema = mongoose.Schema(schema)

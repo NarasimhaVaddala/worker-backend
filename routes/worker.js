@@ -2,6 +2,10 @@ const express = require('express')
 const router = express.Router()
 const isLogin = require('../middleware/isLogin')
 const workermodel = require('../models/worker')
+
+const attendanceModel = require('../models/attendance')
+
+
 router.post('/addnewworker', isLogin, async (req, res) => {
     try {
         const { name, mobile, designation, rate } = req.body;
@@ -13,7 +17,7 @@ router.post('/addnewworker', isLogin, async (req, res) => {
         console.log(e.message);
         console.log(e.code);
         if (e.code === 11000) {
-            return res.status(402).send({ error: "Worker already exists", success: true })
+            return res.status(400).send({ error: "Worker already exists", success: true })
         }
         else {
 
@@ -64,14 +68,32 @@ router.put('/editworker', isLogin, async (req, res) => {
 router.put('/takeattendance/:id' , isLogin , async(req,res)=>{
         try {
             const {time , advance , date} = req.body;
+            let padv = Number(advance)
+            console.log(padv , typeof(padv));
             const id = req.params.id;
             
             const editedWorker = await workermodel.updateOne({_id:id}, {$push:{attendance:{time , advance , date}}});
-            return res.status(200).send({ success: true, editedWorker })
+            console.log(editedWorker);
         } catch (e) {
             console.log(e.message);
             return res.status(400).send({ error: "Something went wrong", success: false })
         }
 })
 
+
+
+
+
+
+
+router.post('/getatt' , isLogin , async(req,res)=>{
+    try {
+            const {id } = req.body;
+            const attendance = await workermodel.findOne({_id : id})
+            console.log(attendance.attendance);
+           return res.status(200).send({success:true , attendance:attendance.attendance})
+    } catch (error) {
+        return res.status(400).send({ error: "Something went wrong", success: false })
+    }
+})
 module.exports = router
