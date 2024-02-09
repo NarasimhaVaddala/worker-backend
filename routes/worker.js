@@ -67,8 +67,7 @@ router.put('/editworker', isLogin, async (req, res) => {
 router.put('/takeattendance/:id' , isLogin , async(req,res)=>{
         try {
             const {time , advance , date} = req.body;
-            let padv = Number(advance)
-            console.log(padv , typeof(padv));
+           
             const id = req.params.id;
             
             const editedWorker = await workermodel.updateOne({_id:id}, {$push:{attendance:{time , advance , date}}});
@@ -86,6 +85,19 @@ router.post('/getatt' , isLogin , async(req,res)=>{
             console.log(attendance.attendance);
            return res.status(200).send({success:true , attendance:attendance.attendance})
     } catch (error) {
+        return res.status(400).send({ error: "Something went wrong", success: false })
+    }
+})
+
+
+router.post('/deleteatt' , isLogin , async(req,res)=>{
+    try {
+        const {id } = req.body;
+        const delatt = await workermodel.updateOne({_id:id}, {$pull:{attendance:{}}});
+        console.log(delatt);
+        res.status(200).send({success:true , delatt})
+    } catch (e) {
+        console.log(e.message);
         return res.status(400).send({ error: "Something went wrong", success: false })
     }
 })
