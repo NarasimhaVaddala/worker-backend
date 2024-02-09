@@ -3,7 +3,6 @@ const router = express.Router()
 const isLogin = require('../middleware/isLogin')
 const workermodel = require('../models/worker')
 
-const attendanceModel = require('../models/attendance')
 
 
 router.post('/addnewworker', isLogin, async (req, res) => {
@@ -79,12 +78,6 @@ router.put('/takeattendance/:id' , isLogin , async(req,res)=>{
             return res.status(400).send({ error: "Something went wrong", success: false })
         }
 })
-
-
-
-
-
-
 
 router.post('/getatt' , isLogin , async(req,res)=>{
     try {
