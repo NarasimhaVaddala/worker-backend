@@ -8,7 +8,8 @@ const workermodel = require('../models/worker')
 router.post('/addnewworker', isLogin, async (req, res) => {
     try {
         const { name, mobile, designation, rate } = req.body;
-        const newWorker = await workermodel.create({ name, mobile, designation, rate })
+        let adminid = req.user;
+        const newWorker = await workermodel.create({ name, mobile, designation, rate , adminid })
         console.log(newWorker);
         return res.status(200).send({ success: true, worker: newWorker })
     }
@@ -30,7 +31,8 @@ router.post('/addnewworker', isLogin, async (req, res) => {
 
 router.get('/fetchallworkers', isLogin, async (req, res) => {
     try {
-        const workerlist = await workermodel.find();
+        let adminid = req.user;
+        const workerlist = await workermodel.find({adminid});
         return res.status(200).send({ workerlist, success: true })
     } catch (error) {
         return res.status(500).send({ error: "Internal Server Error", success: false })
@@ -42,7 +44,8 @@ router.get('/fetchallworkers', isLogin, async (req, res) => {
 router.delete('/deleteworker', isLogin, async (req, res) => {
     try {
         const { id } = req.body;
-        const deletedworker = await workermodel.deleteOne({ _id: id })
+        let adminid = req.user;
+        const deletedworker = await workermodel.deleteOne({ _id: id , adminid:adminid})
 
         return res.status(200).send({ success: true, deletedworker })
     } catch (e) {
@@ -54,6 +57,7 @@ router.delete('/deleteworker', isLogin, async (req, res) => {
 router.put('/editworker', isLogin, async (req, res) => {
     try {
         const { id, name, designation, mobile, rate } = req.body;
+
         const editedWorker = await workermodel.findByIdAndUpdate(id, { name, designation, mobile, rate });
         console.log(editedWorker);
         return res.status(200).send({ success: true, editedWorker })

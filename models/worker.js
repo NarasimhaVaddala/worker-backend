@@ -19,6 +19,11 @@ const schema = {
         type:Number,
         required:true,
     },
+    adminid:{
+        type:String,
+        required:true,
+    }
+    ,
     attendance:{type:Array , default:[]}
 
 }
