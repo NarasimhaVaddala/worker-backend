@@ -13,7 +13,7 @@ const isLogin = (req ,res , next) => {
                next();
             }
         } catch (error) {
-            return res.status(401).send({error:"Something Went Wrong" , success:false , message :e.message})
+            return res.status(401).send({error:"Something Went Wrong" , success:false , message :error.message})
         }
 
     }

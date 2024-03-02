@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const paymentlog = mongoose.Schema({
+    adminid:{type:String ,  required:true},
     name:{type:String ,required:true},
     id:{type:String, required:true},
     mobile:{type:String, required:true},

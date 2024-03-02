@@ -5,6 +5,11 @@ const admin = mongoose.Schema(
         name:{
             type:String
         },
+        email:{
+            type:String,
+            required:true,
+            unique:true
+        },
         mobile:{
             type:String,
             required:true,

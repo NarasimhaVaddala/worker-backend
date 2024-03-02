@@ -6,7 +6,8 @@ const paymentLog = require('../models/paymentlog')
 router.post('/paymentlog' , isLogin , async(req,res)=>{
     try {
         const {name , id , mobile , date , paidamount , workedamount , advance , fromdate , todate} = req.body;
-        const paymentlog =  await paymentLog.create({name , id , mobile , date , paidamount , workedamount , advance, fromdate , todate})
+        let adminid = req.user;
+        const paymentlog =  await paymentLog.create({adminid , name , id , mobile , date , paidamount , workedamount , advance, fromdate , todate})
         return res.status(200).send({success:true , paymentlog:paymentlog})
 
 
@@ -21,7 +22,8 @@ router.post('/paymentlog' , isLogin , async(req,res)=>{
 
 router.get('/paymenthistory' , isLogin , async(req,res)=>{
     try {
-        const paymentlog = await paymentLog.find({});
+        let adminid = req.user;
+        const paymentlog = await paymentLog.find({adminid});
         return res.status(200).send({success:true , paymentlog:paymentlog})
     } catch (error) {
         
