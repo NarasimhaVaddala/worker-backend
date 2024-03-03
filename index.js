@@ -29,7 +29,7 @@ const transporter = nodemailer.createTransport({
   secure:true,
   auth: {
     user: 'pcmobt@gmail.com',
-    pass: 'bdds qyep cuhh rkii'
+    pass: 'Enter Code'
   }
 });
 const info = await transporter.sendMail({
