@@ -23,7 +23,7 @@ async function sendOtp(email , otp) {
         secure: true,
         auth: {
             user: 'pcmobt@gmail.com',
-            pass: 'bdds qyep cuhh rkii'
+            pass: 'Enter code'
         }
     });
     const info = await transporter.sendMail({
