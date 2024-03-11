@@ -77,6 +77,7 @@ router.put('/takeattendance/:id' , isLogin , async(req,res)=>{
         
         const editedWorker = await workermodel.updateOne({_id:id}, {$push:{attendance:{time , advance , date}}});
         console.log(editedWorker);
+        return res.status(200).send({success:true , updatedattendance : {time , advance , date}})
     } catch (e) {
         console.log(e.message);
         return res.status(400).send({ error: "Something went wrong", success: false })
