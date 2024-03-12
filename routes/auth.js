@@ -6,6 +6,7 @@ const secret = "N@R@$!MH@"
 const otpGenerator = require('otp-generator')
 const nodemailer = require('nodemailer')
 const adminmodel = require('../models/admin')
+require('dotenv').config()
 
 const otpStore = {}
 function capitalizeFirstLetter(string) {
@@ -22,14 +23,14 @@ async function sendOtp(email , otp) {
         port: 465,
         secure: true,
         auth: {
-            user: 'pcmobt@gmail.com',
-            pass: 'bdds qyep cuhh rkii'
+            user: process.env.EMAIL_SECRET,
+            pass: process.env.PASSWORD_SECRET
         }
     });
     const info = await transporter.sendMail({
         from: {
             name: "Worker Management",
-            address: "pcmobt@gmail.com"
+            address: process.env.EMAIL_SECRET
         },
         to: {
             address: email

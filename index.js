@@ -19,33 +19,6 @@ app.get('/' , (req,res)=>{
 })
 
 
-app.get('/mail' ,  async(req,res)=>{
-
-const transporter = nodemailer.createTransport({
- 
-  service:'gmail',
-  host:'smtp.gmail.com',
-  port:465,
-  secure:true,
-  auth: {
-    user: 'pcmobt@gmail.com',
-    pass: 'Enter Code'
-  }
-});
-const info = await transporter.sendMail({
-    from:{
-        name:"Worker Management",
-        address:"pcmobt@gmail.com"
-    },
-    to:{
-        address:'vaishnavivaddala@gmail.com'
-    },
-    subject:'lkaslkjals',
-    html:"<h1>Your Otp to verify worker management is 11478523</h1>"
-})
-
-console.log(info.messageId);
-})
 
 
 app.listen(PORT , ()=>{
