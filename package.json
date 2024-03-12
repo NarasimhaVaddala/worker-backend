@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js",
-    "build":"netlify deploy --prod"
+    "start": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -24,7 +23,6 @@
     "mongoose": "^8.1.1",
     "nodemailer": "^6.9.11",
     "nodemon": "^3.1.0",
-    "otp-generator": "^4.0.1",
-    "serverless-http": "^3.2.0"
+    "otp-generator": "^4.0.1"
   }
 }

@@ -3,9 +3,9 @@ const router = express.Router()
 const app = express()
 const cors = require('cors')
 const bd = require('body-parser')
-const PORT = 3000;
 const db = require('./db')
 const nodemailer = require('nodemailer')
+const PORT = process.env.PORT;
 
 app.use(bd({extended:true}))
 app.use(cors())
@@ -27,4 +27,3 @@ app.listen(PORT , ()=>{
 })
 
 
-export const handler = serverless(api);
