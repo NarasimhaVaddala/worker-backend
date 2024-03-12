@@ -1,4 +1,5 @@
 const express = require('express')
+const router = express.Router()
 const app = express()
 const cors = require('cors')
 const bd = require('body-parser')
@@ -14,7 +15,7 @@ app.use('/api/worker' , require('./routes/worker'))
 app.use('/api/auth' , require('./routes/auth'))
 app.use('/api/payment' , require('./routes/paymentlog'))
 
-app.get('/' , (req,res)=>{
+router.get('/' , (req,res)=>{
     res.json({hi:"Hello"})
 })
 
@@ -24,3 +25,6 @@ app.get('/' , (req,res)=>{
 app.listen(PORT , ()=>{
     console.log(`http://localhost:${PORT}`);
 })
+
+
+export const handler = serverless(api);
