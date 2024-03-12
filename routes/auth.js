@@ -23,7 +23,7 @@ async function sendOtp(email , otp) {
         secure: true,
         auth: {
             user: 'pcmobt@gmail.com',
-            pass: 'Enter code'
+            pass: 'bdds qyep cuhh rkii'
         }
     });
     const info = await transporter.sendMail({
@@ -53,6 +53,11 @@ async function sendOtp(email , otp) {
 router.post('/signup', async (req, res) => {
     try {
         const { name, email, mobile, password } = req.body;
+
+        if (!name || !email || !mobile || !password) {
+            return res.status(400).send({success:false , error:"Enter valid details"})
+        }
+        
         const salt = bcrypt.genSaltSync(10)
         const hash = bcrypt.hashSync(password, salt)
         const user = await adminmodel.create({ name: capitalizeFirstLetter(name), email: email, mobile: mobile, password: hash })
@@ -100,13 +105,15 @@ router.post('/login', async (req, res) => {
 router.post('/forgotpassword', async (req, res) => {
     try {
         const { email } = req.body;
-        let user = await adminmodel.findOne({ email:email })
-        if (user===null || !user) {
+        console.log(email);
+        let user = await adminmodel.findOne({ email})
+        console.log("user",user);
+        if (!user) {
             return res.status(401).send({ error: "It seems like the email is wrong or you donot have an account!", success: false })
         }
         else {
             let otp = otpGenerator.generate(4 , {upperCaseAlphabets:false , lowerCaseAlphabets:false , specialChars:false , digits:true})
-            // console.log(otp , email);
+            console.log(otp , email);
             otpStore[email] = otp;
             let success = await sendOtp(email , otp)
             console.log(success);
@@ -114,7 +121,7 @@ router.post('/forgotpassword', async (req, res) => {
                 return res.status(200).send({success:"Otp Sent to email"})
             }
             else{
-                return res.status(400).send({error:"Some error occured please try again after sometime"})
+                return res.status(400).send({error:"Please enter valid email or try again after sometime"})
             }
     }
            
@@ -131,6 +138,9 @@ router.post('/verifyotp' , async(req,res)=>{
         console.log(otpStore[email]);  
         if (!email || !otp || !password) {
             return res.status(400).send({error:"please enter Email and Otp" , success:false})
+        }
+        else if(otpStore[email]!=otp){
+            return res.status(401).send({error:"Otp Doesnot Match" , success:false})
         }
         else if (otpStore[email]==otp) {
             const salt = bcrypt.genSaltSync(10)
@@ -150,5 +160,50 @@ router.post('/verifyotp' , async(req,res)=>{
 
 })
 
+
+router.post('/justemail' , async(req,res)=>{
+        const {email} = req.body;
+
+        try {
+            let user = await adminmodel.findOne({ email})
+            if (user) {
+                return res.status(200).send({success:false , error:"email already exists"})
+            }
+            let otp = otpGenerator.generate(4 , {upperCaseAlphabets:false , lowerCaseAlphabets:false , specialChars:false , digits:true})
+            console.log(otp , email);
+            otpStore[email] = otp;
+            let success = await sendOtp(email , otp)
+            console.log(success);
+            if (success==true) {
+                return res.status(200).send({success:true , data:"otp send to mail"})
+            }
+            else{
+                return res.status(400).send({error:"Please enter valid email or try again after sometime"})
+            }
+        } catch (e) {
+            return res.status(500).send({error:"Internal server error"})
+        }
+})
+
+router.post('/justverify' , async(req,res)=>{
+    
+    try {
+
+            const {email , otp  } = req.body;
+            console.log(otpStore[email]);  
+            if (!email || !otp ) {
+                return res.status(400).send({error:"please enter Email and Otp" , success:false})
+            }
+            else if(otpStore[email]!=otp){
+                return res.status(401).send({error:"Otp Doesnot Match" , success:false})
+            }
+            else if (otpStore[email]==otp) {
+                delete otpStore[email]
+                return res.status(200).send({success:true , data:"Otp Verified Sucessfully"})
+            }
+        } catch (e) {
+            return res.status(500).send({error:"Internal server error"})
+        }
+})
 
 module.exports = router

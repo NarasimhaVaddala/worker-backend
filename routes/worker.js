@@ -88,8 +88,8 @@ router.post('/getatt' , isLogin , async(req,res)=>{
 try {
         const {id } = req.body;
         const attendance = await workermodel.findOne({_id : id})
-        console.log(attendance.attendance);
-       return res.status(200).send({success:true , attendance:attendance.attendance})
+        
+       return res.status(200).send({success:true , attendance:attendance.attendance , details:attendance})
 } catch (error) {
     return res.status(400).send({ error: "Something went wrong", success: false })
 }
