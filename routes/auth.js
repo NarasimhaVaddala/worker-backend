@@ -216,7 +216,7 @@ router.post('/editdetails' , isLogin ,async(req,res)=>{
     try {
         let adminid = req.user;
         const { name , mobile}  = req.body;
-        const admin = await adminmodel.findOneAndUpdate(adminid , {name:name , mobile:mobile})
+        const admin = await adminmodel.findOneAndUpdate({_id : adminid} , {name:name , mobile:mobile})
         console.log(admin);
         return res.status(200).send({success:true ,  details:{name , mobile}})
     } catch (error) {
