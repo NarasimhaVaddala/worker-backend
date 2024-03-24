@@ -6,7 +6,9 @@ const secret = "N@R@$!MH@"
 const otpGenerator = require('otp-generator')
 const nodemailer = require('nodemailer')
 const adminmodel = require('../models/admin')
+const isLogin = require('../middleware/isLogin')
 require('dotenv').config()
+
 
 const otpStore = {}
 function capitalizeFirstLetter(string) {
@@ -89,7 +91,7 @@ router.post('/login', async (req, res) => {
         const success = bcrypt.compareSync(password, user.password)
         if (success) {
             const token = jwt.sign(user.id, secret);
-            return res.status(200).send({ token: token, success: true, name: user.name })
+            return res.status(200).send({ token: token, success: true, name: user.name , mobile:user.mobile})
         }
         else {
             return res.status(401).send({ error: "Please Enter correct details", success: false })
@@ -207,4 +209,18 @@ router.post('/justverify' , async(req,res)=>{
         }
 })
 
+
+
+
+router.post('/editdetails' , isLogin ,async(req,res)=>{
+    try {
+        let adminid = req.user;
+        const { email , mobile}  = req.body;
+        const admin = await adminmodel.findOneAndUpdate(adminid , {email:email , mobile:mobile})
+        console.log(admin);
+        return res.status(200).send({success:true ,  details:{email , mobile}})
+    } catch (error) {
+        return res.status(500).send({error:"Some error has occured" , success:false})
+    }
+})
 module.exports = router
