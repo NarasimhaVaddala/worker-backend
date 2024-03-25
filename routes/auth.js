@@ -223,4 +223,42 @@ router.post('/editdetails' , isLogin ,async(req,res)=>{
         return res.status(500).send({error:"Some error has occured" , success:false})
     }
 })
+
+
+
+router.post('/contactme' , async(req,res)=>{
+    try {
+        const {name , email , message} = req.body;
+        const transporter = nodemailer.createTransport({
+
+            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: process.env.EMAIL_SECRET,
+                pass: process.env.PASSWORD_SECRET
+            }
+        });
+        const info = await transporter.sendMail({
+            from: {
+                name: name,
+                address: email
+            },
+            to: {
+                address: "narasimhavaddala@gmail.com"
+            },
+            subject: 'Recruiter Contact',
+            html: `<h3>${email}</h3><br/><p>${message}</p>`
+        })
+        if (info) {
+            console.log(info.messageId);
+            
+        return res.status(200).send({success:true})
+        }
+
+    } catch (error) {
+        return res.status(500).send({error:error.message ,  success:false})
+    }
+})
 module.exports = router
