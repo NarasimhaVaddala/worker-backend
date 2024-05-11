@@ -181,10 +181,10 @@ router.post('/justemail' , async(req,res)=>{
                 return res.status(200).send({success:true , data:"otp send to mail"})
             }
             if(!success){
-                return res.status(400).send({error:"Please enter valid email or try again after sometime"})
+                return res.status(400).send({success:false , error:"Please enter valid email or try again after sometime"})
             }
         } catch (e) {
-            return res.status(500).send({error:"Internal server error"})
+            return res.status(500).send({success:false ,error:"Internal server error"})
         }
 })
 
