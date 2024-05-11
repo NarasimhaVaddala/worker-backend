@@ -177,10 +177,10 @@ router.post('/justemail' , async(req,res)=>{
             otpStore[email] = otp;
             let success = await sendOtp(email , otp)
             console.log(success);
-            if (success==true) {
+            if (success) {
                 return res.status(200).send({success:true , data:"otp send to mail"})
             }
-            else{
+            if(!success){
                 return res.status(400).send({error:"Please enter valid email or try again after sometime"})
             }
         } catch (e) {
